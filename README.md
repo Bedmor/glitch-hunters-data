@@ -1,29 +1,103 @@
-# Create T3 App
+# CityFix - Belediye Yönetim Paneli ve Şehir Sorunları Takip Sistemi
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+CityFix, vatandaşların şehirdeki altyapı sorunlarını (çukur, bozuk lamba, vb.) bildirmesini ve belediye yetkililerinin bu sorunları görselleştirip, takip edip çözmesini sağlayan modern bir web platformudur. Bu proje, vatandaş katılımını artırmak ve belediye hizmetlerini daha şeffaf ve hızlı hale getirmek için geliştirilmiştir.
 
-## What's next? How do I make an app with this?
+## 🚀 Özellikler
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+### 🏛️ Yönetim Paneli (B2G Dashboard)
+Belediye yetkilileri ve yöneticiler için geliştirilen kapsamlı panel:
+*   **Genel Bakış:** Açık, işlenen ve çözülen sorunların anlık istatistikleri ve çözüm oranı analizleri.
+*   **Harita Analizi (Heatmap):** Şehrin hangi bölgelerinde sorunların yoğunlaştığını gösteren, Leaflet tabanlı interaktif harita. Sorunlar durumlarına göre renk kodlarıyla (Kırmızı: Açık, Sarı: İşleniyor, Yeşil: Çözüldü) işaretlenir.
+*   **Rapor Yönetimi:** Gelen tüm şikayetlerin listesi, filtreleme ve detaylı inceleme ekranları.
+*   **Durum Güncelleme:** Yetkililer, raporların durumunu anlık olarak değiştirebilir. Vatandaşlar bu güncellemeleri anında görebilir.
+*   **Rol Bazlı Yetkilendirme:**
+    *   **Admin:** Raporları görüntüler ve durum günceller.
+    *   **Super Admin:** Raporları kalıcı olarak silme yetkisine sahiptir.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+### 📱 Mobil/Vatandaş Tarafı (Veri Entegrasyonu)
+Bu proje, mobil uygulamadan gelen verileri (`glitch-hunters` mobil uygulaması) yöneten merkezi veri ve yönetim katmanıdır.
+*   Vatandaşlar sorunların fotoğrafını çekip konum bilgisi ile paylaşır.
+*   Puanlama ve yorum sistemi ile topluluk etkileşimi sağlanır.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## 🛠️ Teknolojiler
 
-## Learn More
+Bu proje en güncel ve modern web teknolojileri kullanılarak inşa edilmiştir:
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+*   **Framework:** [Next.js 15 (App Router)](https://nextjs.org/) - React tabanlı full-stack framework.
+*   **Dil:** [TypeScript](https://www.typescriptlang.org/) - Tip güvenliği ve geliştirilebilir kod yapısı için.
+*   **Veritabanı & ORM:** [Prisma](https://www.prisma.io/) ile PostgreSQL.
+*   **Harita:** [Leaflet](https://leafletjs.com/) ve `react-leaflet` - İnteraktif harita görselleştirmeleri için.
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/) - Hızlı ve modern UI tasarımı için.
+*   **Icons:** [Lucide React](https://lucide.dev/) - Modern ikon seti.
+*   **Authentication:** Güvenli, sunucu taraflı, JWT ve Cookie tabanlı özel yetkilendirme sistemi (NextAuth kullanılmadan, `bcryptjs` ve `jose` ile in-house çözüm).
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## ⚙️ Kurulum ve Çalıştırma
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyin:
 
-## How do I deploy this?
+### Gereksinimler
+*   Node.js (v18 veya üzeri)
+*   PostgreSQL veritabanı
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### Adım 1: Depoyu Klonlayın
+```bash
+git clone https://github.com/kullaniciadi/glitch-hunters-data.git
+cd glitch-hunters-data
+```
+
+### Adım 2: Bağımlılıkları Yükleyin
+```bash
+npm install
+```
+
+### Adım 3: Çevresel Değişkenleri Ayarlayın
+Kök dizinde `.env` dosyası oluşturun ve veritabanı bağlantı adresinizi ekleyin:
+```env
+DATABASE_URL="postgresql://kullanici:sifre@localhost:5432/glitch_db"
+# Auth için gizli anahtar (src/server/auth.ts içinde hardcoded, prod için env'ye taşınmalı)
+```
+
+### Adım 4: Veritabanını Hazırlayın
+Prisma şemasını veritabanına uygulayın:
+```bash
+npx prisma generate
+npm run db:push
+```
+
+### Adım 5: Projeyi Başlatın
+Geliştirme sunucusunu başlatın:
+```bash
+npm run dev
+```
+Uygulamanız `http://localhost:3000` adresinde çalışacaktır.
+
+## 🔐 Giriş Bilgileri (Demo)
+
+Yönetim paneline erişmek için `/dashboard` yolunu kullanın.
+
+*   **Standart Yönetici (Admin):**
+    *   Kullanıcı Adı: (Gerekmez, sadece şifre)
+    *   Şifre: `admin`
+*   **Süper Yönetici (Super Admin):**
+    *   Şifre: `admin5454`
+    *(Not: Bu şifreler demo amaçlıdır, prodüksiyonda değiştirilmelidir.)*
+
+## 📂 Proje Yapısı
+
+```
+src/
+├── app/
+│   ├── dashboard/       # Yönetim paneli sayfaları (layout, map, reports vb.)
+│   ├── login/           # Giriş sayfası
+├── server/
+│   ├── auth.ts          # Auth mantığı (JWT, Cookie, Bcrypt)
+│   ├── db.ts            # Prisma istemcisi
+│   ├── actions.ts       # Server Actions (Veritabanı işlemleri)
+├── middleware.ts        # Sayfa koruması için ara yazılım
+```
+
+## 🤝 Katkıda Bulunma
+Katkıda bulunmak isterseniz lütfen bir `issue` açın veya `pull request` gönderin.
+
+## 📄 Lisans
+Bu proje MIT lisansı ile lisanslanmıştır.
